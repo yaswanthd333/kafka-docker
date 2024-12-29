@@ -1,0 +1,38 @@
+docker-compose up -d
+docker-compose ps
+docker-compose exec kafka1 kafka-topics --create --topic learning --bootstrap-server localhost:9092 --replication-factor 3 --partitions 3
+docker-compose exec kafka1 kafka-console-producer --topic learning --bootstrap-server localhost:9092
+docker-compose exec kafka1 kafka-console-consumer --topic learning --from-beginning --bootstrap-server localhost:9092
+
+
+Explanation:
+
+docker-compose up -d
+Starts all services defined in your docker-compose.yml file
+The -d flag runs containers in detached mode (background)
+This will start your Kafka cluster and any other defined services
+
+docker-compose ps
+Lists all running containers managed by Docker Compose
+Shows container name, status, and exposed ports
+Useful for verifying all services are running correctly
+
+docker-compose exec kafka1 kafka-topics --create --topic learning --bootstrap-server localhost:9092 --replication-factor 3 --partitions 3
+Executes a command inside the kafka1 container
+Creates a new Kafka topic named "learning"
+Configuration:
+--bootstrap-server localhost:9092: Kafka broker address
+--replication-factor 3: Creates 3 copies of each partition for fault tolerance
+--partitions 3: Divides the topic into 3 partitions for parallel processing
+
+docker-compose exec kafka1 kafka-console-producer --topic learning --bootstrap-server localhost:9092
+Opens an interactive producer console in the kafka1 container
+Allows you to manually write messages to the "learning" topic
+Each line you type becomes a message in the topic
+
+docker-compose exec kafka1 kafka-console-consumer --topic learning --from-beginning --bootstrap-server localhost:9092
+Starts a console consumer in the kafka1 container
+Reads and displays messages from the "learning" topic
+--from-beginning flag means it will show all messages, not just new ones
+Will continuously show new messages as they arrive
+These commands are typically used for testing and debugging a Kafka cluster setup.
